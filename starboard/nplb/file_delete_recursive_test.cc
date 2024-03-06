@@ -50,6 +50,11 @@ bool FileExists(const char* path) {
   return stat(path, &info) == 0;
 }
 
+bool DirectoryExists(const char* path) {
+  struct stat info;
+  return stat(path, &info) == 0 && S_ISDIR(info.st_mode);
+}
+
 TEST(SbFileDeleteRecursiveTest, SunnyDayDeleteExistingPath) {
   std::string path;
   const std::string& tmp = GetTempDir();
@@ -60,7 +65,7 @@ TEST(SbFileDeleteRecursiveTest, SunnyDayDeleteExistingPath) {
 
     EXPECT_FALSE(FileExists(path.c_str()));
     EXPECT_TRUE(SbDirectoryCreate(path.c_str()));
-    EXPECT_TRUE(SbDirectoryCanOpen(path.c_str()));
+    EXPECT_TRUE(DirectoryExists(path.c_str()));
   }
 
   SbFileError err = kSbFileOk;
@@ -91,7 +96,7 @@ TEST(SbFileDeleteRecursiveTest, SunnyDayDeletePreserveRoot) {
 
   EXPECT_FALSE(FileExists(root.c_str()));
   EXPECT_TRUE(SbDirectoryCreate(root.c_str()));
-  EXPECT_TRUE(SbDirectoryCanOpen(root.c_str()));
+  EXPECT_TRUE(DirectoryExists(root.c_str()));
 
   EXPECT_TRUE(SbFileDeleteRecursive(root.c_str(), true));
   EXPECT_TRUE(FileExists(root.c_str()));

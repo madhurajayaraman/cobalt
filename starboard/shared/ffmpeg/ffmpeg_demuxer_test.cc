@@ -14,6 +14,7 @@
 
 #include "starboard/shared/ffmpeg/ffmpeg_demuxer.h"
 
+#include <sys/stat.h>
 #include <cstdint>
 #include <cstdlib>
 #include <fstream>
@@ -47,6 +48,11 @@ using ::testing::SizeIs;
 constexpr bool kIsStreaming = false;
 constexpr char kInputWebm[] = "bear-320x240.webm";
 
+bool DirectoryExists(const char* path) {
+  struct stat info;
+  return stat(path, &info) == 0 && S_ISDIR(info.st_mode);
+}
+
 std::string ResolveTestFilename(const char* filename) {
   std::vector<char> content_path(kSbFileMaxPath);
   SB_CHECK(SbSystemGetPath(kSbSystemPathContentDirectory, content_path.data(),
@@ -55,7 +61,7 @@ std::string ResolveTestFilename(const char* filename) {
       std::string(content_path.data()) + kSbFileSepChar + "third_party" +
       kSbFileSepChar + "chromium" + kSbFileSepChar + "media" + kSbFileSepChar +
       "test" + kSbFileSepChar + "data";
-  SB_CHECK(SbDirectoryCanOpen(directory_path.c_str()))
+  SB_CHECK(DirectoryExists(directory_path.c_str()))
       << "Cannot open directory " << directory_path;
   return directory_path + kSbFileSepChar + filename;
 }

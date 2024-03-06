@@ -72,6 +72,11 @@ bool FileExists(const char* path) {
   return stat(path, &info) == 0;
 }
 
+bool DirectoryExists(const char* path) {
+  struct stat info;
+  return stat(path, &info) == 0 && S_ISDIR(info.st_mode);
+}
+
 TEST(SbSystemGetPathTest, ReturnsRequiredPaths) {
   BasicTest(kSbSystemPathContentDirectory, true, true, __LINE__);
   BasicTest(kSbSystemPathCacheDirectory, true, true, __LINE__);
@@ -137,7 +142,7 @@ TEST(SbSystemGetPathTest, CanCreateAndRemoveDirectoryInCache) {
     // Create the directory and confirm it exists and can be opened.
     EXPECT_TRUE(SbDirectoryCreate(path.data()));
     EXPECT_TRUE(FileExists(path.data()));
-    EXPECT_TRUE(SbDirectoryCanOpen(path.data()));
+    EXPECT_TRUE(DirectoryExists(path.data()));
     SbDirectory directory = SbDirectoryOpen(path.data(), NULL);
     EXPECT_TRUE(SbDirectoryIsValid(directory));
 

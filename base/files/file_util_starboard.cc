@@ -142,8 +142,10 @@ bool AbsolutePath(FilePath* path) {
 bool DeleteFile(const FilePath &path, bool recursive) {
   AssertBlockingAllowed();
   const char *path_str = path.value().c_str();
-
-  bool directory = SbDirectoryCanOpen(path_str);
+  
+  struct stat file_info;
+  bool file_exists = stat(path_str, &file_info) == 0;
+  bool directory = file_exists && S_ISDIR(file_info.st_mode);
   if (!recursive || !directory) {
     return SbFileDelete(path_str);
   }

@@ -14,6 +14,7 @@
 
 #include "starboard/nplb/file_helpers.h"
 
+#include <sys/stat.h>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -49,7 +50,9 @@ std::string GetFileTestsDataDir() {
                                kSbFileSepChar + "test" + kSbFileSepChar +
                                "starboard" + kSbFileSepChar + "nplb" +
                                kSbFileSepChar + "file_tests";
-  SB_CHECK(SbDirectoryCanOpen(directory_path.c_str()));
+  struct stat info;
+  bool exists = stat(directory_path.c_str(), &info) == 0;
+  SB_CHECK(exists && S_ISDIR(info.st_mode));
   return directory_path;
 }
 
