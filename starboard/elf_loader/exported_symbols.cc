@@ -442,7 +442,6 @@ ExportedSymbols::ExportedSymbols() {
   REGISTER_SYMBOL(socket);
   REGISTER_SYMBOL(snprintf);
   REGISTER_SYMBOL(sprintf);
-  REGISTER_SYMBOL(stat);
   REGISTER_SYMBOL(vfwprintf);
   REGISTER_SYMBOL(vsnprintf);
   REGISTER_SYMBOL(vsscanf);
@@ -466,6 +465,7 @@ ExportedSymbols::ExportedSymbols() {
       reinterpret_cast<const void*>(&__wrap_pthread_mutex_unlock);
   map_["pthread_mutex_trylock"] =
       reinterpret_cast<const void*>(&__wrap_pthread_mutex_trylock);
+  map_["stat"] = reinterpret_cast<const void*>(&__wrap_stat);
   map_["time"] = reinterpret_cast<const void*>(&__wrap_time);
 
 #if defined(_MSC_VER)
