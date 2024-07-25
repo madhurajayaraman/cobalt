@@ -125,11 +125,9 @@ typedef enum SbSystemPropertyId {
   // a true value. Corresponds to 'lmt' field.
   kSbSystemPropertyLimitAdTracking,
 
-#if SB_API_VERSION >= 15
   // Type of the device, e.g. such as "TV", "STB", "OTT"
   // Please see Youtube Technical requirements for a full list of allowed values
   kSbSystemPropertyDeviceType,
-#endif
 } SbSystemPropertyId;
 
 #if SB_API_VERSION < 15
