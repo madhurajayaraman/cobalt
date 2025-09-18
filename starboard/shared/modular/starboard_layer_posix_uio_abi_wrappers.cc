@@ -19,7 +19,10 @@
 ssize_t __abi_wrap_writev(int fildes,
                           const struct musl_iovec* iov,
                           int iovcnt) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wvla-extension"
   struct iovec platform_iov[iovcnt];
+#pragma clang diagnostic pop
   for (int i = 0; i < iovcnt; ++i) {
     platform_iov[i].iov_base = iov[i].iov_base;
     platform_iov[i].iov_len = iov[i].iov_len;

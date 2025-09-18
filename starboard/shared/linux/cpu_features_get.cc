@@ -190,9 +190,11 @@ class ProcCpuInfo {
       if (line_end_ptr == nullptr) {
         line_end_ptr = file_data_ptr + file_data_size_;
       }
-
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wvla-extension"
       char line_buffer[line_end_ptr - line_start_ptr +
                        1];  // NOLINT(runtime/arrays)
+#pragma clang diagnostic pop
       memset(line_buffer, 0, sizeof(line_buffer));
       memcpy(line_buffer, line_start_ptr, line_end_ptr - line_start_ptr);
       line_buffer[line_end_ptr - line_start_ptr] = '\0';

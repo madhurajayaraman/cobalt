@@ -84,7 +84,10 @@ void* Send(PlatformServiceImpl* service,
   // failure.
   auto valid_message_received = false;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wvla-extension"
   char message[length + 1];
+#pragma clang diagnostic pop
   std::memcpy(message, data, length);
   message[length] = '\0';
 

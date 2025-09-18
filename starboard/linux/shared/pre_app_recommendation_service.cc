@@ -107,8 +107,10 @@ void* Send(PlatformServiceImpl* service,
   SB_DCHECK(service);
   SB_DCHECK(data);
   SB_DCHECK(output_length);
-
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wvla-extension"
   char message[length + 1];
+#pragma clang diagnostic pop
   std::memcpy(message, data, length);
   message[length] = '\0';
 
